@@ -3,7 +3,7 @@
 USER $username
 
 # TODO: Require a stable version
-RUN composer require upstreamable/ddev-basin:dev-main && \
+RUN composer global require upstreamable/ddev-basin:dev-main && \
   ln -s /home/$username/.composer/vendor/bin/basin.php /usr/local/bin/basin
   
 # Switch back to root for other dockerfiles
