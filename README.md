@@ -7,7 +7,7 @@
 
 ## Overview
 
-This add-on integrates Basin into your [DDEV](https://ddev.com/) project.
+This add-on attempts to simplify add-on management for [DDEV](https://ddev.com/) projects.
 
 ## Installation
 
@@ -16,32 +16,10 @@ ddev add-on get upstreamable/ddev-basin
 ddev restart
 ```
 
-After installation, make sure to commit the `.ddev` directory to version control.
+After installation, make sure to commit the `.ddev/config.basin.yml` to version control.
 
 ## Usage
 
-| Command | Description |
-| ------- | ----------- |
-| `ddev describe` | View service status and used ports for Basin |
-| `ddev logs -s basin` | Check Basin logs |
-
-## Advanced Customization
-
-To change the Docker image:
-
-```bash
-ddev dotenv set .ddev/.env.basin --basin-docker-image="ddev/ddev-utilities:latest"
-ddev add-on get upstreamable/ddev-basin
-ddev restart
-```
-
-Make sure to commit the `.ddev/.env.basin` file to version control.
-
-All customization options (use with caution):
-
-| Variable | Flag | Default |
-| -------- | ---- | ------- |
-| `BASIN_DOCKER_IMAGE` | `--basin-docker-image` | `ddev/ddev-utilities:latest` |
 
 ## Credits
 
