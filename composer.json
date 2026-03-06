@@ -12,8 +12,8 @@
   ],
   "require": {
     "composer-runtime-api": "^2.2",
-    "symfony/console": "^7",
-    "symfony/yaml": "^7"
+    "symfony/console": "^8",
+    "symfony/yaml": "^8"
   },
   "autoload": {
     "psr-4": {
