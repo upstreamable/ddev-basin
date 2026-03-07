@@ -6,6 +6,9 @@
 ## Example: "ddev config-drupal-basin"
 ## CanRunGlobally: true
 
+# Exit on error or pipefail
+set -eo pipefail
+
 ddev config-drupal
 ddev config-drupal-extras
 ddev config-drupal-redis

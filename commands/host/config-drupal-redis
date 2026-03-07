@@ -6,8 +6,12 @@
 ## Example: "ddev config-drupal-redis"
 ## CanRunGlobally: true
 
+# Exit on error or pipefail
+set -eo pipefail
+
 ddev add-on get ddev/ddev-redis
 ddev redis-backend valkey/valkey:9
 ddev composer require drupal/redis:^2@alpha
 ddev restart
 ddev drush -y en redis
+ddev drush -y config:export

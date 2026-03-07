@@ -6,6 +6,9 @@
 ## Example: "ddev config-drupal"
 ## CanRunGlobally: true
 
+# Exit on error or pipefail
+set -eo pipefail
+
 ddev config --docroot=web --project-type=drupal12
 ddev start
 

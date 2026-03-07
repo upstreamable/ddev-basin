@@ -6,10 +6,14 @@
 ## Example: "ddev config-drupal-extras"
 ## CanRunGlobally: true
 
-# TODO: Use releases when available
-ddev add-on get  https://github.com/upstreamable/ddev-basin/tarball/main
+# Exit on error or pipefail
+set -eo pipefail
 
-# Avoid commiting all the ddev add-on files since ddev-basin plugin takes care
+# TODO: Use releases when available
+#ddev add-on get "https://github.com/upstreamable/ddev-basin/tarball/main"
+ddev add-on get ~/Projects/ddev-basin
+
+# Avoid tracking the whole ddev folder. The ddev-basin add-on hooks take care
 # of installing add-ons.
 line="/.ddev/"
 gitignore="${DDEV_APPROOT}/.gitignore"
@@ -38,4 +42,3 @@ ddev config --web-environment-add="DRUPAL_ENABLED_SPLITS=development"
 # Make the new environment variable available
 ddev start
 ddev drush -y config:export
-
