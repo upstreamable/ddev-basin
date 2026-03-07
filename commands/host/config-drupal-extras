@@ -16,7 +16,7 @@ gitignore="${DDEV_APPROOT}/.gitignore"
 grep -qF "$line" "$gitignore" || printf "\n# Avoid commiting all DDEV add-on files.\n${line}" >> "$gitignore"
 
 # Add ddev and basin config to the repo.
-git add -f "${DDEV_APPROOT}/.ddev/config.yaml" "${DDEV_APPROOT}/.ddev/config.yaml"
+git add -f "${DDEV_APPROOT}/.ddev/config.yaml" "${DDEV_APPROOT}/.ddev/config.basin.yaml"
 
 ddev composer config allow-plugins.cweagans/composer-patches true
 ddev composer config allow-plugins.upstreamable/drupal-settings-installer true
