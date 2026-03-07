@@ -3,5 +3,7 @@ name: basin
 project_files:
   - config.basin.yaml
   - web-build/Dockerfile.basin
+  - commands/host/basin-host-commands
+  - commands/basin/README.md
 
 ddev_version_constraint: '>= v1.25.1'

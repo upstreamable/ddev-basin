@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+#ddev-generated
+
+## Description: Run commands on the host required by a container
+## Usage: basin-host-commands
+## Example: ddev basin-host-commands
+
+dir="${DDEV_APPROOT}/.ddev/commands/basin"
+
+# Unmatched globs expand to nothing, not the literal pattern
+shopt -s nullglob   
+for f in "$dir"/*.env; do
+  # skip if not a regular file (or if no matches)
+  [ -f "$f" ] || continue
+  source "$f"                    
+  rm $f
+
+  case "$BASIN_COMMAND" in
+    add-on-get)
+      ddev add-on get "$BASIN_ADDON" --version "$BASIN_ADDON_VERSION"
+      ;;
+    "")
+      ;;
+    *)
+      ;;
+  esac
+done
+

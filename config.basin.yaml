@@ -1,3 +1,5 @@
 hooks:
   post-start:
     - exec: "basin add-on:sync"
+    - exec-host: "ddev basin-host-commands"
+addons: {}
