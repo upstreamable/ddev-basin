@@ -5,14 +5,15 @@
 ## Usage: basin-host-commands
 ## Example: ddev basin-host-commands
 
+# Directory to search for *.env files
 dir="${DDEV_APPROOT}/.ddev/commands/basin"
 
 # Unmatched globs expand to nothing, not the literal pattern
-shopt -s nullglob   
+shopt -s nullglob
 for f in "$dir"/*.env; do
   # skip if not a regular file (or if no matches)
   [ -f "$f" ] || continue
-  source "$f"                    
+  source "$f"
   rm $f
 
   case "$BASIN_COMMAND" in

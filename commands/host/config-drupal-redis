@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#ddev-generated
 
 ## Description: Config redis settings Drupal project
 ## Usage: config-drupal-redis

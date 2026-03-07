@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#ddev-generated
 
 ## Description: Config a Basin Drupal project
 ## Usage: config-drupal-basin

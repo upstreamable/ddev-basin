@@ -1,17 +1,22 @@
 #!/usr/bin/env bash
+#ddev-generated
 
 ## Description: Config extra settings Drupal project
 ## Usage: config-drupal-extras
 ## Example: "ddev config-drupal-extras"
 ## CanRunGlobally: true
 
-# Avoid commiting all the ddev add-on files.
-line="/.ddev/"     
+# TODO: Use releases when available
+ddev add-on get  https://github.com/upstreamable/ddev-basin/tarball/main
+
+# Avoid commiting all the ddev add-on files since ddev-basin plugin takes care
+# of installing add-ons.
+line="/.ddev/"
 gitignore="${DDEV_APPROOT}/.gitignore"
 grep -qF "$line" "$gitignore" || printf "\n# Avoid commiting all DDEV add-on files.\n${line}" >> "$gitignore"
 
-# Add ddev config to the repo.
-git add -f "${DDEV_APPROOT}/.ddev/config.yaml"
+# Add ddev and basin config to the repo.
+git add -f "${DDEV_APPROOT}/.ddev/config.yaml" "${DDEV_APPROOT}/.ddev/config.yaml"
 
 ddev composer config allow-plugins.cweagans/composer-patches true
 ddev composer config allow-plugins.upstreamable/drupal-settings-installer true

@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+#ddev-generated
 
 ## Description: Config a standard Drupal project
 ## Usage: config-drupal
@@ -36,6 +37,6 @@ git init
 # ddev composer config --json --merge extra.drupal-scaffold '{"gitignore": true}'
 ddev composer require --no-install drush/drush
 ddev composer install
-# Install from recipe instead of profile since it is equivalent 
+# Install from recipe instead of profile since it is equivalent
 # but without the useless profile installed in core.extension.yml
 ddev drush -y site:install core/recipes/standard
