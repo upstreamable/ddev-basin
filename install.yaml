@@ -5,5 +5,10 @@ project_files:
   - web-build/Dockerfile.basin
   - commands/host/basin-host-commands
   - commands/basin/README.md
+global_files:
+  - commands/host/config-drupal
+  - commands/host/config-drupal-extras
+  - commands/host/config-drupal-redis
+  - commands/host/config-drupal-basin
 
 ddev_version_constraint: '>= v1.25.1'

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+## Description: Config redis settings Drupal project
+## Usage: config-drupal-redis
+## Example: "ddev config-drupal-redis"
+## CanRunGlobally: true
+
+ddev add-on get ddev/ddev-redis
+ddev redis-backend valkey/valkey:9
+ddev composer require drupal/redis:^2@alpha
+ddev restart
+ddev drush -y en redis

@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+## Description: Config extra settings Drupal project
+## Usage: config-drupal-extras
+## Example: "ddev config-drupal-extras"
+## CanRunGlobally: true
+
+# Avoid commiting all the ddev add-on files.
+line="/.ddev/"     
+gitignore="${DDEV_APPROOT}/.gitignore"
+grep -qF "$line" "$gitignore" || printf "\n# Avoid commiting all DDEV add-on files.\n${line}" >> "$gitignore"
+
+# Add ddev config to the repo.
+git add -f "${DDEV_APPROOT}/.ddev/config.yaml"
+
+ddev composer config allow-plugins.cweagans/composer-patches true
+ddev composer config allow-plugins.upstreamable/drupal-settings-installer true
+# Included as a dependency of drupal/core-dev
+ddev composer config allow-plugins.tbachert/spi true
+# Let the drupal-settings-installer scaffold the settings.
+rm "${DDEV_APPROOT}/web/sites/default/settings.php"
+ddev composer require cweagans/composer-patches upstreamable/drupal-settings-ddev drupal/config_split
+
+ddev composer require --dev -W drupal/core-dev drupal/devel upstreamable/drupal-settings-devel-env upstreamable/drupal-settings-config-split
+
+ddev drush -y pm:uninstall toolbar
+ddev drush -y pm:install config_split devel navigation
+mkdir -p config/development
+# Create development split
+ddev drush php:eval "\Drupal\config_split\Entity\ConfigSplitEntity::create(['id' => 'development', 'status' => false, 'label' => 'Development', 'storage' => 'folder', 'folder' => '../config/development', 'module' => ['config' => 0, 'devel' => 0, 'field_ui' => 0, 'views_ui' => 0]])->save()"
+# Enable split
+ddev config --web-environment-add="DRUPAL_ENABLED_SPLITS=development"
+# Make the new environment variable available
+ddev start
+ddev drush -y config:export
+

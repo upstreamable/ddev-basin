@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+## Description: Config a Basin Drupal project
+## Usage: config-drupal-basin
+## Example: "ddev config-drupal-basin"
+## CanRunGlobally: true
+
+ddev config-drupal
+ddev config-drupal-extras
+ddev config-drupal-redis

@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+## Description: Config a standard Drupal project
+## Usage: config-drupal
+## Example: "ddev config-drupal"
+## CanRunGlobally: true
+
+ddev config --docroot=web --project-type=drupal12
+ddev start
+
+ddev composer create-project --no-install drupal/recommended-project
+
+# Could be converted into PHP that reads the proper docroot,
+# files and private
+# From https://www.drupal.org/docs/develop/using-composer/manage-dependencies#s-standard-gitignore-snippet
+cat > .gitignore << EOF
+# Ignore directories managed by Composer
+/vendor/
+/web/core/
+/web/modules/contrib/
+/web/themes/contrib/
+/web/profiles/contrib/
+/web/libraries/
+
+# Ignore configuration and user-generated content
+/web/sites/
+EOF
+
+# Allow projects to choose their own license
+rm LICENSE.txt
+
+# The Drupal scaffolding plugin only manages gitignore files when the git repository is initialized
+git init
+
+# Let the scaffold files be present but ignore them in the repository
+# ddev composer config --json --merge extra.drupal-scaffold '{"gitignore": true}'
+ddev composer require --no-install drush/drush
+ddev composer install
+# Install from recipe instead of profile since it is equivalent 
+# but without the useless profile installed in core.extension.yml
+ddev drush -y site:install core/recipes/standard
