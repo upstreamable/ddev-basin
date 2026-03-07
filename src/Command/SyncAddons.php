@@ -22,58 +22,65 @@ class SyncAddons
 
         $finder = new Finder();
         $finder->in(getenv('DDEV_APPROOT') . '/.ddev/addon-metadata')->files()->name('manifest.yaml');
-	$manifestData = [];
+        $manifestData = [];
         if ($finder->hasResults()) {
-                foreach ($finder as $yaml) {
-                        $manifest = Yaml::parseFile($yaml->getRealPath());
-                        $installedAddons[] = $manifest['repository'];
-			// Index by repository
-			$manifestData[$manifest['repository']] = $manifest;
+            foreach ($finder as $yaml) {
+                $manifest = Yaml::parseFile($yaml->getRealPath());
+
+                // Avoid basin itself as an installed add-on since it should be
+                // installed separately in every project
+                if ($manifest['name'] === 'basin') {
+                    continue;
                 }
+
+                $installedAddons[] = $manifest['repository'];
+                // Index by repository
+                $manifestData[$manifest['repository']] = $manifest;
+            }
         }
 
         $addonsToInstall = array_diff($expectedAddons, $installedAddons);
         if ($addonsToInstall) {
-                $output->writeln('Installing: ' . implode(', ', $addonsToInstall));
-		foreach ($addonsToInstall as $addonToInstall) {
-			// To be executed by the post-start hook `basin-host-commands`
-			file_put_contents(
-				filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/' . hash('sha256', $addonToInstall) . '.env',
-				data:
-				"BASIN_COMMAND=add-on-get\n" .
-				"BASIN_ADDON=" . $addonToInstall . "\n" .
-				"BASIN_ADDON_VERSION=" . $basinConfig['addons'][$addonToInstall]['version'],
-			);
-			// Set env vars config.
-			if (isset($basinConfig['addons'][$addonToInstall]['env'])) {
-				file_put_contents(
-					filename: getenv('DDEV_APPROOT') . '/.ddev/.env.' . $basinConfig['addons'][$addonToInstall]['name'],
-					data: $basinConfig['addons'][$addonToInstall]['env']
-				);
-			}
-		}
+            $output->writeln('Installing: ' . implode(', ', $addonsToInstall));
+            foreach ($addonsToInstall as $addonToInstall) {
+                // To be executed by the post-start hook `basin-host-commands`
+                file_put_contents(
+                    filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/' . hash('sha256', $addonToInstall) . '.env',
+                    data:
+                "BASIN_COMMAND=add-on-get\n" .
+                    "BASIN_ADDON=" . $addonToInstall . "\n" .
+                    "BASIN_ADDON_VERSION=" . $basinConfig['addons'][$addonToInstall]['version'],
+                );
+                // Set env vars config.
+                if (isset($basinConfig['addons'][$addonToInstall]['env'])) {
+                    file_put_contents(
+                        filename: getenv('DDEV_APPROOT') . '/.ddev/.env.' . $basinConfig['addons'][$addonToInstall]['name'],
+                        data: $basinConfig['addons'][$addonToInstall]['env']
+                    );
+                }
+            }
         }
         $addonsToAdd = array_diff($installedAddons, $expectedAddons);
         if ($addonsToAdd) {
-                $output->writeln(implode(', ', $addonsToAdd) . ' installed. Adding to config.basin.yaml');
-		// Detect additional config
-		foreach ($addonsToAdd as $addonToAdd) {
-			$addonData = [
-				'version' => $manifestData[$addonToAdd]['version'],
-			];
+            $output->writeln(implode(', ', $addonsToAdd) . ' installed. Adding to config.basin.yaml');
+            // Detect additional config
+            foreach ($addonsToAdd as $addonToAdd) {
+                $addonData = [
+                    'version' => $manifestData[$addonToAdd]['version'],
+                ];
 
-                        $dotEnvPath = getenv('DDEV_APPROOT') . '/.ddev/.env.' . $manifestData[$addonToAdd]['name'];
-			if (file_exists($dotEnvPath)) {
-				$addonData['name'] = $manifestData[$addonToAdd]['name'];
-				$addonData['env'] = file_get_contents($dotEnvPath);
-			}
-			$basinConfig['addons'][$addonToAdd] = $addonData;
-		}
-		file_put_contents($basinConfigPath, Yaml::dump(
-			input: $basinConfig,
-			inline: 4,
-			flags: Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK
-		));
+                $dotEnvPath = getenv('DDEV_APPROOT') . '/.ddev/.env.' . $manifestData[$addonToAdd]['name'];
+                if (file_exists($dotEnvPath)) {
+                    $addonData['name'] = $manifestData[$addonToAdd]['name'];
+                    $addonData['env'] = file_get_contents($dotEnvPath);
+                }
+                $basinConfig['addons'][$addonToAdd] = $addonData;
+            }
+            file_put_contents($basinConfigPath, Yaml::dump(
+                input: $basinConfig,
+                inline: 4,
+                flags: Yaml::DUMP_MULTI_LINE_LITERAL_BLOCK
+            ));
         }
 
         return Command::SUCCESS;

@@ -10,3 +10,5 @@ COMMAND=add-on-get
 ADDON=ddev/ddev-redis
 VERSION=v2.2.0
 ```
+
+This file is #ddev-generated
