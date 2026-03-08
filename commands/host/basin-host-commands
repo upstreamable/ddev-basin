@@ -20,6 +20,9 @@ for f in "$dir"/*.env; do
     add-on-get)
       ddev add-on get "$BASIN_ADDON" --version "$BASIN_ADDON_VERSION"
       ;;
+    ddev-restart)
+      ddev restart
+      ;;
     "")
       ;;
     *)

@@ -45,9 +45,8 @@ class SyncAddons
             foreach ($addonsToInstall as $addonToInstall) {
                 // To be executed by the post-start hook `basin-host-commands`
                 file_put_contents(
-                    filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/' . hash('sha256', $addonToInstall) . '.env',
-                    data:
-                "BASIN_COMMAND=add-on-get\n" .
+                    filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/01-' . hash('sha256', $addonToInstall) . '.env',
+                    data: "BASIN_COMMAND=add-on-get\n" .
                     "BASIN_ADDON=" . $addonToInstall . "\n" .
                     "BASIN_ADDON_VERSION=" . $basinConfig['addons'][$addonToInstall]['version'],
                 );
@@ -59,6 +58,11 @@ class SyncAddons
                     );
                 }
             }
+            // Restart as a post-start hook `basin-host-commands`
+            file_put_contents(
+                filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/99-restart.env',
+                data: "BASIN_COMMAND=ddev-restart"
+            );
         }
         $addonsToAdd = array_diff($installedAddons, $expectedAddons);
         if ($addonsToAdd) {
