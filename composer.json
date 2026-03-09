@@ -15,7 +15,7 @@
     "symfony/console": "^8",
     "symfony/finder": "^8",
     "symfony/process": "^8 || ^7 || ^6",
-    "symfony/yaml": "^8"
+    "symfony/yaml": "^8 || ^7 || ^6 || ^5"
   },
   "autoload": {
     "psr-4": {
