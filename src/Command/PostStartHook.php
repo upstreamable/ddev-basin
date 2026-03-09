@@ -6,6 +6,7 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
@@ -14,8 +15,14 @@ use Symfony\Component\Yaml\Yaml;
  * Run all tasks needed after a ddev project start.
  */
 #[AsCommand(name: 'post-start:hook')]
-class PostStartHook
+class PostStartHook extends Command
 {
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $application = $this->getApplication();
+        return $this->__invoke($output, $application);
+    }
+
     public function __invoke(OutputInterface $output, Application $application): int
     {
         $addonSyncInput = new ArrayInput([

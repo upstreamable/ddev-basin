@@ -4,13 +4,25 @@ namespace Basin\Command;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Add add-ons to the requirements and install required add-ons.
+ *
+ * When the minimum version is console <= 8 the extends and the execute can be
+ * dropped.
+ */
 #[AsCommand(name: 'add-on:sync')]
-class SyncAddons
+class SyncAddons extends Command
 {
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        return $this->__invoke($output);
+    }
+
     public function __invoke(OutputInterface $output): int
     {
         $basinConfigPath = getenv('DDEV_APPROOT') . '/.ddev/config.basin.yaml';

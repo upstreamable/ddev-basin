@@ -11,10 +11,12 @@ use Basin\Command\PostStartAutoInstall;
 
 $application = new Application('Basin');
 
-$application->addCommand(new SyncAddons());
-$application->addCommand(new PostStartHook());
-$application->addCommand(new PostStartComposer());
-$application->addCommand(new PostStartAutoInstall());
+$application->addCommands([
+    new SyncAddons(),
+    new PostStartHook(),
+    new PostStartComposer(),
+    new PostStartAutoInstall(),
+]);
 
 $statusCode = $application->run();
 
