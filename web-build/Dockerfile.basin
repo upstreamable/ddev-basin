@@ -8,4 +8,3 @@ RUN composer global require --no-cache upstreamable/ddev-basin:dev-main && \
 
 # Switch back to root for other dockerfiles
 USER root
-
