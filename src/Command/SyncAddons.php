@@ -16,13 +16,8 @@ use Symfony\Component\Yaml\Yaml;
  * dropped.
  */
 #[AsCommand(name: 'add-on:sync')]
-class SyncAddons extends Command
+class SyncAddons
 {
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        return $this->__invoke($output);
-    }
-
     public function __invoke(OutputInterface $output): int
     {
         $basinConfigPath = getenv('DDEV_APPROOT') . '/.ddev/config.basin.yaml';

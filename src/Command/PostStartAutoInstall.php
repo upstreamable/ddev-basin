@@ -15,13 +15,8 @@ use Symfony\Component\Yaml\Yaml;
  * Try to install the site automatically.
  */
 #[AsCommand(name: 'post-start:auto-install')]
-class PostStartAutoInstall extends Command
+class PostStartAutoInstall
 {
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        return $this->__invoke($output);
-    }
-
     public function __invoke(OutputInterface $output): int
     {
         if (getenv('DDEV_DATABASE_FAMILY') !== 'mysql') {

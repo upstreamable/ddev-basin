@@ -15,14 +15,8 @@ use Symfony\Component\Yaml\Yaml;
  * Run all tasks needed after a ddev project start.
  */
 #[AsCommand(name: 'post-start:hook')]
-class PostStartHook extends Command
+class PostStartHook
 {
-    protected function execute(InputInterface $input, OutputInterface $output): int
-    {
-        $application = $this->getApplication();
-        return $this->__invoke($output, $application);
-    }
-
     public function __invoke(OutputInterface $output, Application $application): int
     {
         $addonSyncInput = new ArrayInput([
@@ -41,9 +35,7 @@ class PostStartHook extends Command
             return Command::FAILURE;
         }
 
-        $input = new ArrayInput([
-            'command' => 'post-start:auto-install',
-        ]);
+        $input = new ArrayInput(['command' => 'post-start:auto-install']);
         $returnCode = $application->doRun($input, $output);
         if ($returnCode !== Command::SUCCESS) {
             return Command::FAILURE;
