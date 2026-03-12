@@ -8,15 +8,17 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\DependencyInjection\AddConsoleCommandPass;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
-use Basin\Command\SyncAddons;
-use Basin\Command\PostStartComposer;
-use Basin\Command\PostStartHook;
-use Basin\Command\PostStartAutoInstall;
 
 $container = new ContainerBuilder();
 
 // Load container configuration
 $loader = new YamlFileLoader($container, new FileLocator());
+
+// Load other packages that might add basin commands.
+foreach (glob(__DIR__ . '/../../*/basin-config/services.yaml') as $file) {
+    $loader->load($file);
+}
+
 $loader->load(__DIR__ . '/config/services.yml');
 
 $container->addCompilerPass(new AddConsoleCommandPass());
