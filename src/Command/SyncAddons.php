@@ -73,9 +73,13 @@ class SyncAddons
         }
         $addonsToAdd = array_diff($installedAddons, $expectedAddons);
         if ($addonsToAdd) {
-            $output->writeln(implode(', ', $addonsToAdd) . ' installed. Adding to config.basin.yaml');
             // Detect additional config
             foreach ($addonsToAdd as $addonToAdd) {
+                if (str_starts_with($manifestData[$addonToAdd]['repository'], '/')) {
+                    $output->writeln($addonToAdd ' add-on comes from a local repository. Not adding to config.basin.yaml');
+                    continue;
+                }
+                $output->writeln(implode($addonToAdd ' installed. Adding to config.basin.yaml');
                 $addonData = [
                     'version' => $manifestData[$addonToAdd]['version'],
                     'repository' => $manifestData[$addonToAdd]['repository'],
