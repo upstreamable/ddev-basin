@@ -40,9 +40,9 @@ class SyncAddons
                     continue;
                 }
 
-                $installedAddons[] = $manifest['repository'];
-                // Index by repository
-                $manifestData[$manifest['repository']] = $manifest;
+                $installedAddons[] = $manifest['name'];
+                // Index by name
+                $manifestData[$manifest['name']] = $manifest;
             }
         }
 
@@ -54,7 +54,7 @@ class SyncAddons
                 file_put_contents(
                     filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/01-' . hash('sha256', $addonToInstall) . '.env',
                     data: "BASIN_COMMAND=add-on-get\n" .
-                    "BASIN_ADDON=" . $addonToInstall . "\n" .
+                    "BASIN_ADDON=" . $basinConfig['addons'][$addonToInstall]['repository'] . "\n" .
                     "BASIN_ADDON_VERSION=" . $basinConfig['addons'][$addonToInstall]['version'],
                 );
                 // Set env vars config.
@@ -78,6 +78,7 @@ class SyncAddons
             foreach ($addonsToAdd as $addonToAdd) {
                 $addonData = [
                     'version' => $manifestData[$addonToAdd]['version'],
+                    'repository' => $manifestData[$addonToAdd]['repository'],
                 ];
 
                 $dotEnvPath = getenv('DDEV_APPROOT') . '/.ddev/.env.' . $manifestData[$addonToAdd]['name'];
