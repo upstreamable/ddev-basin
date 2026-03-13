@@ -18,7 +18,8 @@ for f in "$dir"/*.env; do
 
   case "$BASIN_COMMAND" in
     add-on-get)
-      ddev add-on get "$BASIN_ADDON" --version "$BASIN_ADDON_VERSION"
+      # Add --version only when is non-empty
+      ddev add-on get "$BASIN_ADDON" ${BASIN_ADDON_VERSION:+--version "$BASIN_ADDON_VERSION"}
       ;;
     ddev-restart)
       ddev restart
