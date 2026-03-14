@@ -79,7 +79,7 @@ class SyncAddons
                     $output->writeln($addonToAdd . ' add-on comes from a local repository. Not adding to config.basin.yaml');
                     continue;
                 }
-                $output->writeln(implode($addonToAdd  . ' installed. Adding to config.basin.yaml');
+                $output->writeln($addonToAdd . ' installed. Adding to config.basin.yaml');
                 $addonData = [
                     'version' => $manifestData[$addonToAdd]['version'],
                     'repository' => $manifestData[$addonToAdd]['repository'],
