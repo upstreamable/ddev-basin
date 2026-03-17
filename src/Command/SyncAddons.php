@@ -50,6 +50,9 @@ class SyncAddons
         if ($addonsToInstall) {
             $output->writeln('Installing: ' . implode(', ', $addonsToInstall));
             foreach ($addonsToInstall as $addonToInstall) {
+                if (!isset($basinConfig['addons'][$addonToInstall]['repository'])) {
+                    continue;
+                }
                 // To be executed by the post-start hook `basin-host-commands`
                 file_put_contents(
                     filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/01-' . hash('sha256', $addonToInstall) . '.env',
