@@ -68,8 +68,9 @@ class SyncAddons
                     );
                 }
             }
-            $restartRequired = (new \FilesystemIterator(getenv('DDEV_APPROOT') . '/.ddev/commands/basin'))->valid();
-            if ($restartRequired) {
+
+            // When there is .env files to install addons, issue a restart.
+            if ((count(glob(getenv('DDEV_APPROOT') . '/.ddev/commands/basin/*.env')) > 0)) {
                 // Restart as a post-start hook `basin-host-commands`
                 file_put_contents(
                     filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/99-restart.env',
