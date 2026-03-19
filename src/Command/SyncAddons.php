@@ -68,11 +68,14 @@ class SyncAddons
                     );
                 }
             }
-            // Restart as a post-start hook `basin-host-commands`
-            file_put_contents(
-                filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/99-restart.env',
-                data: "BASIN_COMMAND=ddev-restart"
-            );
+            $restartRequired = (new \FilesystemIterator(getenv('DDEV_APPROOT') . '/.ddev/commands/basin'))->valid();
+            if ($restartRequired) {
+                // Restart as a post-start hook `basin-host-commands`
+                file_put_contents(
+                    filename: getenv('DDEV_APPROOT') . '/.ddev/commands/basin/99-restart.env',
+                    data: "BASIN_COMMAND=ddev-restart"
+                );
+            }
         }
         $addonsToAdd = array_diff($installedAddons, $expectedAddons);
         if ($addonsToAdd) {
