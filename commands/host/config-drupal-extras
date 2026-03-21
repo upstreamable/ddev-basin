@@ -28,9 +28,9 @@ ddev composer config allow-plugins.upstreamable/drupal-settings-installer true
 ddev composer config allow-plugins.tbachert/spi true
 # Let the drupal-settings-installer scaffold the settings.
 rm "${DDEV_APPROOT}/web/sites/default/settings.php"
-ddev composer require cweagans/composer-patches upstreamable/drupal-settings-ddev drupal/config_split
+ddev composer require cweagans/composer-patches upstreamable/drupal-settings-ddev upstreamable/drupal-settings-config-split
 
-ddev composer require --dev -W drupal/core-dev drupal/devel upstreamable/drupal-settings-devel-env upstreamable/drupal-settings-config-split
+ddev composer require --dev -W drupal/core-dev drupal/devel upstreamable/drupal-settings-devel-env
 
 ddev drush -y pm:uninstall toolbar
 ddev drush -y pm:install config_split devel navigation
