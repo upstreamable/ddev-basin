@@ -58,6 +58,11 @@ class PostStartAutoInstall
         }
         $output->writeln('Empty database detected. Installing the site');
 
+        if (!str_starts_with(getenv('DDEV_PROJECT_TYPE'), 'drupal')) {
+            $output->writeln('Auto install is only supported for Drupal projects');
+            return Command::SUCCESS;
+        }
+
         $process = new Process(['drush', '-y','site:install', '--existing-config'], getenv('DDEV_APPROOT'));
         $process->setTimeout(300);
         $process->run();
