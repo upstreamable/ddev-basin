@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+#ddev-generated
+
+## Description: Config a standard Nextcloud project
+## Usage: config-nextcloud
+## Example: "ddev config-nextcloud"
+## CanRunGlobally: true
+
+# Exit on error or pipefail
+set -eo pipefail
+
+ddev config --docroot=web --project-type=php --webserver-type=nginx-fpm
+ddev start
+
+ddev add-on get  https://github.com/upstreamable/ddev-nextcloud-fpm/tarball/main

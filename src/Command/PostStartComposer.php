@@ -13,7 +13,7 @@ class PostStartComposer
 {
     public function __invoke(OutputInterface $output): int
     {
-        if (file_exists(getenv('DDEV_APPROOT') . '/vendor')) {
+        if (!file_exists(getenv('DDEV_APPROOT') . '/composer.json') || file_exists(getenv('DDEV_APPROOT') . '/vendor')) {
             return Command::SUCCESS;
         }
         $output->writeln('No vendor folder found, running composer install');
